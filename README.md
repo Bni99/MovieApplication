@@ -2,3 +2,10 @@
   npx create-react-app my-app --template typescript
 
   -Integrating Tailwind
+
+  ---->Basic Structure of our app
+
+  ------->Landing page
+  --------->Header
+  ------------>Logo ->Sign up button(will route to login page)
+  --------->Description and login adding email (will route to login page)
