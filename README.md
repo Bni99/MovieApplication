@@ -9,3 +9,7 @@
   --------->Header
   ------------>Logo ->Sign up button(will route to login page)
   --------->Description and login adding email (will route to login page)
+
+  ------->Login page
+  -------->On toggle Sign up page
+  ------->Validation
