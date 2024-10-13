@@ -7,6 +7,8 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "./utils/firebase";
+import { useUserContext } from "./providers/UserProvider";
+import { useNavigate } from "react-router-dom";
 
 type FormValues = {
   userName?: string;
@@ -18,6 +20,8 @@ const Login = () => {
   const [isSigninForm, setIsSigninForm] = useState(true);
   const { register, control, handleSubmit, formState } = useForm<FormValues>();
   const { errors } = formState;
+  const { user, addUser } = useUserContext();
+  const navigate = useNavigate();
 
   const onSubmit = function ({
     userName,
@@ -28,6 +32,13 @@ const Login = () => {
       signInWithEmailAndPassword(auth, userEmail, userPassword)
         .then((userCredential) => {
           const user = userCredential.user;
+          console.log(user);
+          addUser({
+            uid: user.uid,
+            userName: user?.displayName,
+            userEmail: user?.email,
+          });
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -37,6 +48,12 @@ const Login = () => {
       createUserWithEmailAndPassword(auth, userEmail, userPassword)
         .then((userCredential) => {
           const user = userCredential.user;
+          addUser({
+            uid: user.uid,
+            userName: user?.displayName,
+            userEmail: user?.email,
+          });
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -44,6 +61,8 @@ const Login = () => {
         });
     }
   };
+
+  console.log("user in context", user);
 
   const handleFormToggle = function () {
     setIsSigninForm((prev) => !prev);
