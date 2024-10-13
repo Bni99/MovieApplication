@@ -2,6 +2,11 @@ import { useForm } from "react-hook-form";
 import Header from "./Header";
 import { DevTool } from "@hookform/devtools";
 import { useState } from "react";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "./utils/firebase";
 
 type FormValues = {
   userName?: string;
@@ -14,8 +19,30 @@ const Login = () => {
   const { register, control, handleSubmit, formState } = useForm<FormValues>();
   const { errors } = formState;
 
-  const onSubmit = function (data: FormValues) {
-    console.log(data);
+  const onSubmit = function ({
+    userName,
+    userEmail,
+    userPassword,
+  }: FormValues) {
+    if (isSigninForm) {
+      signInWithEmailAndPassword(auth, userEmail, userPassword)
+        .then((userCredential) => {
+          const user = userCredential.user;
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        });
+    } else {
+      createUserWithEmailAndPassword(auth, userEmail, userPassword)
+        .then((userCredential) => {
+          const user = userCredential.user;
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        });
+    }
   };
 
   const handleFormToggle = function () {
@@ -25,7 +52,7 @@ const Login = () => {
   return (
     <div>
       <div className="border-2 border-black h-20">
-        <Header shouldShowSignInButton={true} />
+        <Header />
       </div>
       <div
         className="border-2 border-black flex items-center justify-center"
