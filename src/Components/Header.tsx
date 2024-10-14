@@ -1,14 +1,33 @@
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
+import { signOut } from "firebase/auth";
+import { auth } from "./utils/firebase";
+import { useUserContext } from "./providers/UserProvider";
 
 type HeaderProps = {
   shouldShowSignInButton?: boolean;
+  shouldShowSignOutButton?: boolean;
 };
 
-const Header: React.FC<HeaderProps> = ({ shouldShowSignInButton = false }) => {
+const Header: React.FC<HeaderProps> = ({
+  shouldShowSignInButton = false,
+  shouldShowSignOutButton = false,
+}) => {
   const navigate = useNavigate();
+  const { removeUser } = useUserContext();
   const handleSignInButtonClick = () => {
     navigate("/login");
+  };
+
+  const handleSignOutButtonClick = () => {
+    signOut(auth)
+      .then(() => {
+        removeUser();
+        navigate("/");
+      })
+      .catch((error) => {
+        // An error happened.
+      });
   };
 
   return (
@@ -21,6 +40,9 @@ const Header: React.FC<HeaderProps> = ({ shouldShowSignInButton = false }) => {
       <div>
         {shouldShowSignInButton && (
           <Button onClick={handleSignInButtonClick}>Sign In</Button>
+        )}
+        {shouldShowSignOutButton && (
+          <Button onClick={handleSignOutButtonClick}>Sign Out</Button>
         )}
       </div>
     </div>
