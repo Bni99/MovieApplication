@@ -1,16 +1,6 @@
-import { useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
-
-type FormValues = {
-  userEmail: string;
-};
+import DescriptionForm from "./DescriptionForm";
 
 const Description = () => {
-  const { register, control, handleSubmit } = useForm<FormValues>();
-
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
-  };
   return (
     <div className="h-96 w-[38rem] border-2 border-pink-200 flex flex-col gap-12">
       <div>
@@ -25,28 +15,7 @@ const Description = () => {
         </span>
       </div>
       <div className="flex justify-center">
-        <form
-          className="flex gap-6"
-          onSubmit={handleSubmit(onSubmit)}
-          noValidate
-        >
-          <input
-            type="email"
-            id="userEmail"
-            {...register("userEmail", {
-              required: { value: true, message: "userEmail is required" },
-              pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: "Invalid email format",
-              },
-            })}
-            className="p-2 border-2 border-gray-300 w-80 rounded-md"
-          />
-          <button className="bg-red-600 text-white hover:bg-red-700 px-4 font-semibold rounded transition-colors duration-200">
-            Get Started
-          </button>
-        </form>
-        <DevTool control={control} />
+        <DescriptionForm />
       </div>
     </div>
   );
