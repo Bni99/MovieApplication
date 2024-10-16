@@ -72,7 +72,7 @@ describe("Header", () => {
   });
 
   it("should navigate to landing page when we click on SignOut button", async () => {
-    (signOut as jest.Mock).mockResolvedValueOnce();
+    (signOut as jest.Mock).mockResolvedValueOnce("Successful Signout");
     render(
       <UserProvider>
         <Header shouldShowSignOutButton={true} />
