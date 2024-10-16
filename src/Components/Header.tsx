@@ -25,8 +25,8 @@ const Header: React.FC<HeaderProps> = ({
         removeUser();
         navigate("/");
       })
-      .catch((error) => {
-        // An error happened.
+      .catch(() => {
+        navigate("/404");
       });
   };
 
@@ -34,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({
     <div className="border-2 border-black p-4 ml-36 mr-36 flex items-center justify-between">
       <div className="logo">
         <span className="text-4xl font-extrabold uppercase tracking-tighter text-red-600">
-          Movie Night
+          MovieNight
         </span>
       </div>
       <div>
