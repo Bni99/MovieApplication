@@ -2,6 +2,7 @@ import { DevTool } from "@hookform/devtools";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
+import ErrorMessage from "./ErrorMessage";
 
 type DescriptionFormValues = {
   userEmail: string;
@@ -40,9 +41,7 @@ const DescriptionForm = () => {
             })}
             className="p-2 border-2 border-gray-300 w-80 rounded-md"
           />
-          <p className="text-sm ml-1 text-gray-500">
-            {errors.userEmail?.message}
-          </p>
+          <ErrorMessage errorMessage={errors.userEmail?.message} />
         </div>
         <Button className="py-2">Get Started</Button>
       </form>

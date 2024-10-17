@@ -8,7 +8,9 @@ import {
 } from "firebase/auth";
 import { auth } from "./utils/firebase";
 import { useUserContext } from "./providers/UserProvider";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Button from "./Button";
+import ErrorMessage from "./ErrorMessage";
 
 type FormValues = {
   userName?: string;
@@ -18,9 +20,16 @@ type FormValues = {
 
 const Login = () => {
   const [isSigninForm, setIsSigninForm] = useState(true);
-  const { register, control, handleSubmit, formState } = useForm<FormValues>();
+  const location = useLocation();
+  const { userEmail } = location.state || {};
+  const { register, control, handleSubmit, formState, reset } =
+    useForm<FormValues>({
+      defaultValues: {
+        userEmail: userEmail || "",
+      },
+    });
   const { errors } = formState;
-  const { user, addUser } = useUserContext();
+  const { addUser } = useUserContext();
   const navigate = useNavigate();
 
   const onSubmit = function ({
@@ -31,14 +40,14 @@ const Login = () => {
     if (isSigninForm) {
       signInWithEmailAndPassword(auth, userEmail, userPassword)
         .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
+          const { uid, displayName, email } = userCredential.user;
           addUser({
-            uid: user.uid,
-            userName: user?.displayName,
-            userEmail: user?.email,
+            uid: uid,
+            userName: displayName,
+            userEmail: email,
           });
           navigate("/browse");
+          reset();
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -47,13 +56,14 @@ const Login = () => {
     } else {
       createUserWithEmailAndPassword(auth, userEmail, userPassword)
         .then((userCredential) => {
-          const user = userCredential.user;
+          const { uid, displayName, email } = userCredential.user;
           addUser({
-            uid: user.uid,
-            userName: user?.displayName,
-            userEmail: user?.email,
+            uid: uid,
+            userName: displayName,
+            userEmail: email,
           });
           navigate("/browse");
+          reset();
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -61,8 +71,6 @@ const Login = () => {
         });
     }
   };
-
-  console.log("user in context", user);
 
   const handleFormToggle = function () {
     setIsSigninForm((prev) => !prev);
@@ -101,10 +109,7 @@ const Login = () => {
                     },
                   })}
                 />
-
-                <span className="text-sm ml-1 text-gray-500">
-                  {errors.userName?.message}
-                </span>
+                <ErrorMessage errorMessage={errors.userName?.message} />
               </div>
             )}
 
@@ -124,9 +129,7 @@ const Login = () => {
                   },
                 })}
               />
-              <span className="text-sm ml-1 text-gray-500">
-                {errors.userEmail?.message}
-              </span>
+              <ErrorMessage errorMessage={errors.userEmail?.message} />
             </div>
             <div className="flex flex-col gap-1">
               <input
@@ -145,13 +148,12 @@ const Login = () => {
                   },
                 })}
               />
-              <span className="text-sm ml-1 text-gray-500">
-                {errors.userPassword?.message}
-              </span>
+              <ErrorMessage errorMessage={errors.userPassword?.message} />
             </div>
-            <button className="bg-red-600 text-white hover:bg-red-700 px-4 py-3 font-semibold rounded transition-colors duration-200">
+
+            <Button className="py-3">
               {isSigninForm ? "Sign In" : "Sign Up"}
-            </button>
+            </Button>
 
             <p className="text-gray-600">
               {isSigninForm ? "New to MovieNight?" : "Already a user?"}{" "}
