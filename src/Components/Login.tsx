@@ -12,6 +12,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import ErrorMessage from "./ErrorMessage";
 import { VAILD_PASSWORD_PATTERN, VALID_EMAIL_PATTERN } from "./constants";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type FormValues = {
   userName?: string;
@@ -50,9 +52,8 @@ const Login = () => {
           navigate("/browse");
           reset();
         })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
+        .catch(({ message }) => {
+          toast(message);
         });
     } else {
       createUserWithEmailAndPassword(auth, userEmail, userPassword)
@@ -66,9 +67,8 @@ const Login = () => {
           navigate("/browse");
           reset();
         })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
+        .catch(({ message }) => {
+          toast(message);
         });
     }
   };
@@ -79,6 +79,7 @@ const Login = () => {
 
   return (
     <div>
+      <ToastContainer autoClose={5000} hideProgressBar={true} theme="dark" />
       <div className="border-2 border-black h-20">
         <Header />
       </div>
