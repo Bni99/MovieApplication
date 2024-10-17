@@ -11,6 +11,7 @@ import { useUserContext } from "./providers/UserProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import ErrorMessage from "./ErrorMessage";
+import { VAILD_PASSWORD_PATTERN, VALID_EMAIL_PATTERN } from "./constants";
 
 type FormValues = {
   userName?: string;
@@ -124,7 +125,7 @@ const Login = () => {
                     message: "user email is required",
                   },
                   pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                    value: VALID_EMAIL_PATTERN,
                     message: "Invalid user email",
                   },
                 })}
@@ -142,8 +143,7 @@ const Login = () => {
                     message: "user password is required",
                   },
                   pattern: {
-                    value:
-                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                    value: VAILD_PASSWORD_PATTERN,
                     message: "Invalid password",
                   },
                 })}

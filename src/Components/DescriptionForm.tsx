@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import ErrorMessage from "./ErrorMessage";
+import { VALID_EMAIL_PATTERN } from "./constants";
 
 type DescriptionFormValues = {
   userEmail: string;
@@ -35,7 +36,7 @@ const DescriptionForm = () => {
             {...register("userEmail", {
               required: { value: true, message: "user email is required" },
               pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                value: VALID_EMAIL_PATTERN,
                 message: "invalid email format",
               },
             })}
