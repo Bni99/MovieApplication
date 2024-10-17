@@ -1,6 +1,7 @@
 import { DevTool } from "@hookform/devtools";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import Button from "./Button";
 
 type DescriptionFormValues = {
   userEmail: string;
@@ -43,9 +44,7 @@ const DescriptionForm = () => {
             {errors.userEmail?.message}
           </p>
         </div>
-        <button className="bg-red-600 text-white hover:bg-red-700 px-4 py-2 font-semibold rounded transition-colors duration-200">
-          Get Started
-        </button>
+        <Button className="py-2">Get Started</Button>
       </form>
       <DevTool control={control} />
     </>
